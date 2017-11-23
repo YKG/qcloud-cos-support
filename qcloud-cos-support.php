@@ -31,7 +31,7 @@ function cos_set_options()
         'app_id' => "",
         'secret_id' => "",
         'secret_key' => "",
-        'region' => "sh", // 固定上海
+        'region' => "sh", // 默认上海
         'timeout' => 60,
         'nothumb' => "false", // 是否上传所旅途
         'nolocalsaving' => "false", // 是否保留本地备份
@@ -339,6 +339,8 @@ function cos_setting_page()
     $cos_app_id = esc_attr($cos_options['app_id']);
     $cos_secret_id = esc_attr($cos_options['secret_id']);
     $cos_secret_key = esc_attr($cos_options['secret_key']);
+    $region = esc_attr($cos_options['region']);
+    $timeout = esc_attr($cos_options['timeout']);
 
     $cos_nothumb = esc_attr($cos_options['nothumb']);
     $cos_nothumb = ($cos_nothumb == 'true');
@@ -390,6 +392,24 @@ function cos_setting_page()
                     <td>
                         <input type="text" name="secret_key" value="<?php echo $cos_secret_key; ?>" size="50"
                                placeholder="secretKey"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <legend>region</legend>
+                    </th>
+                    <td>
+                        <input type="text" name="region" value="<?php echo $region; ?>" size="50"
+                               placeholder="region"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <legend>timeout</legend>
+                    </th>
+                    <td>
+                        <input type="text" name="timeout" value="<?php echo $timeout; ?>" size="50"
+                               placeholder="timeout"/>
                     </td>
                 </tr>
                 <tr>
