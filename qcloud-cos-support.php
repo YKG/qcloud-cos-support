@@ -8,9 +8,11 @@ Author: Jeffery Wang
 Author URI: http://blog.wangjunfeng.com
 License: MIT
 */
-require_once('sdk/include.php');
-use Qcloud_cos\Auth;
-use Qcloud_cos\Cosapi;
+//require_once('sdk/include.php');
+//use Qcloud_cos\Auth;
+//use Qcloud_cos\Cosapi;
+require_once('cos-php-sdk-v4/include.php');
+use QCloud\Cos\Api;
 
 if (!defined('WP_PLUGIN_URL'))
     define('WP_PLUGIN_URL', WP_CONTENT_URL . '/plugins');//  plugin url
@@ -29,6 +31,8 @@ function cos_set_options()
         'app_id' => "",
         'secret_id' => "",
         'secret_key' => "",
+        'region' => "sh", // 固定上海
+        'timeout' => 60,
         'nothumb' => "false", // 是否上传所旅途
         'nolocalsaving' => "false", // 是否保留本地备份
         'upload_url_path' => "", // URL前缀
@@ -60,10 +64,14 @@ function _file_upload($object, $file, $opt = array())
     if (@file_exists($file)) {
         try {
             //实例化存储对象
-            $qcloud_cos = new Cosapi();
+//            $qcloud_cos = new Cosapi();
+            $qcloud_cos = new Api($cos_options);
             $dirname = dirname($object);
             _create_folder($cos_bucket, $dirname);
-            $data = $qcloud_cos->upload($file, $cos_bucket, $object);
+//            $data = $qcloud_cos->upload($file, $cos_bucket, $object);
+//            $ret = $cosApi->upload($bucket, $src, $dst);
+            $data = $qcloud_cos->upload($cos_bucket, $file, $object);
+            var_dump($data);
             return TRUE;
         } catch (Exception $ex) {
             return FALSE;
@@ -80,7 +88,10 @@ function _file_upload($object, $file, $opt = array())
  */
 function _create_folder($cos_bucket, $dir)
 {
-    $qcloud_cos = new Cosapi();
+//    $qcloud_cos = new Cosapi();
+    //获取WP配置信息
+    $cos_options = get_option('cos_options', TRUE);
+    $qcloud_cos = new Api($cos_options);
     $data = $qcloud_cos->statFolder($cos_bucket, $dir . '/');
     if ($data['code'] == -166) {
         $dir_array = explode('/', $dir);
@@ -238,9 +249,10 @@ function delete_remote_file($file)
     $del_file_path = str_replace(get_home_path(), '/', $file);
     try {
         //实例化存储对象
-        $qcloud_cos = new Cosapi();
+//        $qcloud_cos = new Cosapi();
+        $qcloud_cos = new Api($cos_options);
         //删除文件
-        $qcloud_cos->del($cos_bucket, $del_file_path);
+        $qcloud_cos->delFile($cos_bucket, $del_file_path);
     } catch (Exception $ex) {
 
     }
