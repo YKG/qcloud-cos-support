@@ -308,6 +308,8 @@ function cos_setting_page()
         $options['app_id'] = (isset($_POST['app_id'])) ? trim(stripslashes($_POST['app_id'])) : '';
         $options['secret_id'] = (isset($_POST['secret_id'])) ? trim(stripslashes($_POST['secret_id'])) : '';
         $options['secret_key'] = (isset($_POST['secret_key'])) ? trim(stripslashes($_POST['secret_key'])) : '';
+        $options['region'] = (isset($_POST['region'])) ? trim(stripslashes($_POST['region'])) : '';
+        $options['timeout'] = (isset($_POST['timeout'])) ? trim(stripslashes($_POST['timeout'])) : '';
         $options['nothumb'] = (isset($_POST['nothumb'])) ? 'true' : 'false';
         $options['nolocalsaving'] = (isset($_POST['nolocalsaving'])) ? 'true' : 'false';
         //仅用于插件卸载时比较使用
